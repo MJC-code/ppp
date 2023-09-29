@@ -1,4 +1,4 @@
-// From Programming: Principles and Practice 2nd edition, pg 83, Drill 1
+// From Programming: Principles and Practice 2nd edition, pg 84, Drill 7
 
 #include "std_lib_facilities.h"
 
