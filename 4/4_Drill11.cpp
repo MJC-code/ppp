@@ -1,7 +1,7 @@
 // Programming Principles and Practice Using C++, Chapter 4, Drill 9
 // Input lengths, using units cm, m, in, ft.
 // Track largest and smallest lengths - all lengths converted to cm internally
-// Rejects invalid units, keeps track of sum and number and stores results.
+// Rejects invalid units, keeps track of sum and number and stores results to a vector of floats (in cm)
 
 #include "std_lib_facilities.h"
 
@@ -72,6 +72,7 @@ int main()
     cout << "Number of values entered: " << num_entries  << "   Sum of values: " << sum << " cm" << endl;
     cout << "Entries:\n";
 
+    sort(entries_in_cm);
     for (float x : entries_in_cm)
     {
         cout << x << " cm\n";
