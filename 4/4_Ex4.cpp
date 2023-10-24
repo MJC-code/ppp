@@ -22,7 +22,6 @@ int main()
 
     int guess = 50;
 
-
     while (guess != answer)
     {
         cout << "Is the number you are thinking of less than " << guess << "? Enter y or n.\n";
@@ -38,7 +37,7 @@ int main()
         if (temp == 'n')
         {
             min = guess;
-            guess = (max + guess) / 2;
+            guess = (max + 1 + guess) / 2;
 
         }
     }
