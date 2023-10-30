@@ -12,6 +12,7 @@ int main()
     char operation;
 
     cin >> a >> b >> operation;
+
     if (operation == '+') cout << "The sum of " << a << " and " << b << " is " << a+b << ".\n";
     else if (operation == '-') cout << "The difference of " << a << " and " << b << " is " << a-b << ".\n";
     else if (operation == '*') cout << "The product of " << a << " and " << b << " is " << a*b << ".\n";
