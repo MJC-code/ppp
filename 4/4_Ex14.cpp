@@ -1,5 +1,5 @@
 // Programming Principles and Practice Using C++, Chapter 4, Excercise 14
-// Find prime numbers from 1 to 100 using the Sieve of Eratosthenes
+// Find prime numbers from 2 to a user input maximum using the Sieve of Eratosthenes
 // vector<bool> has some unusual interactions with std_lib_facilities
 // (see https://stackoverflow.com/questions/71429627/trying-to-change-a-value-in-a-vector-bool), so
 // I've ended up rewriting to use a vector of ints (0 for false, 1 for true)
