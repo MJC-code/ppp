@@ -11,8 +11,12 @@ vector<int> primes;
 int main() {
 
     cout << "This program will find the first n primes. Please enter a value for n: ";
-    int n;
-    cin >> n;
+    int n = -1;
+
+    while(cin >> n) {
+        if (n<100000 && n>0) break;
+        cout << "Please enter a value for n between 1 and 100000: ";
+    };
 
 
     for (int i = 2;; ++i) {
