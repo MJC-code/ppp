@@ -29,7 +29,7 @@ int main()
         }
 
 
-        if (counter > longest_sequence)
+        else if (counter > longest_sequence)
             {
                 longest_sequence = counter;
                 mode = numbers[i-1];
