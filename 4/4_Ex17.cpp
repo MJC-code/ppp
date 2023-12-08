@@ -7,7 +7,7 @@
 int main()
 {
     vector<string> strings;
-    cout << "This program will find the min, max and mode of a series of integers. Please enter a series of strings, followed by Ctrl-D: ";
+    cout << "This program will find the min, max and mode of a series of strings. Please enter a series of strings, followed by Ctrl-D: ";
 
     for (string temp; cin >> temp;) {
         strings.push_back(temp);
