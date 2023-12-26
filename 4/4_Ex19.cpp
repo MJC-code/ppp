@@ -1,33 +1,39 @@
-// Programming Principles and Practice Using C++, Chapter 4, Excercise 18
-// Solve quadratic equations in the form ax^2 + bx + c = 0
+// Programming Principles and Practice Using C++, Chapter 4, Excercise 19
+// Store name/value pairs then display them one pair per line.
 
 #include "std_lib_facilities.h"
-
 
 int main()
 {
 
-    cout << "This program will solve quadratic equations in the form ax^2 + bx + c = 0.\n"
-    << "Please enter values for a, b and c: ";
+    cout << "Please enter a series of unique names / integer values, eg Joe 17\n"
+    << "Enter 'NoName 0' to terminate input.\n";
 
-    float a, b, c;
-    cin >> a >> b >> c;
+    vector<string> names;
+    vector<int> values;
 
-    if (b*b - 4 * a * c < 0) {
-        cout << "This equation has no real roots.\n";
-        exit (0);
+    // Read string and int pairs and push to respective vectors until NoName 0 is entered.
+    while(1) {
+        string temp_string;
+        int temp_int;
+
+        cin >> temp_string >> temp_int;
+        if (temp_string =="NoName" && temp_int == 0) break;
+
+        // Check whether name has already been entered. If so, terminate with error message.
+        for (string a: names) if (a == temp_string) {
+            cout << "Error: duplicate name. Exiting\n";
+            return -1;
+        }
+
+        names.push_back(temp_string);
+        values.push_back(temp_int);
     }
 
-    float x1 = (-b + (sqrt(b * b - (4 * a * c))))/ (2*a);
-    float x2 = (-b - (sqrt(b * b - (4 * a * c))))/ (2*a);
-
-    if (b*b - 4 * a * c == 0) {
-        cout << "This equation has one real root, x = " << x1 << '\n';
-        exit (0);
+    // Print name / value pairs, one per line
+    for (int i=0; i<names.size(); ++i) {
+        cout << names[i] << '\t' << values[i] << '\n';
     }
 
-    else {
-        cout << "The two real solutions of this equation are x = " << x1 << " and x =  " << x2 << '\n';
-        exit (0);
-    }
+    return 0;
 }
