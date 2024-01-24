@@ -4,29 +4,34 @@
 #include <std_lib_facilities.h>
 
 int main()
-try {
+try
+{
     cout << "Please enter the number of integers you want to sum: ";
     int number_to_sum;
     cin >> number_to_sum;
-    if (number_to_sum < 1) error("The number of values to sum must be at least one.\n");
-
+    if (number_to_sum < 1)
+        error("The number of values to sum must be at least one.\n");
 
     cout << "Please enter some integers (Press '|' to stop): ";
     vector<int> numbers;
-    for (int temp; cin >> temp;) {
+    for (int temp; cin >> temp;)
+    {
         numbers.push_back(temp);
     }
-    
-    if (numbers.size() < number_to_sum) error("You didn't enter enough numbers to sum.\n");
-    
+
+    if (numbers.size() < number_to_sum)
+        error("You didn't enter enough numbers to sum.\n");
+
     int total = 0;
     for (int i = 0; i < number_to_sum; i++)
-    { 
+    {
         total += numbers[i];
     }
+    cout << "The sum of the first " << number_to_sum << " numbers is " << total << '\n';
+    return 0;
 }
-catch(exception& e) {
+
+catch (exception &e)
+{
     cout << "Error: " << e.what() << '\n';
 }
-
-
