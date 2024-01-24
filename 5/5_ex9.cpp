@@ -14,20 +14,28 @@ try
 
     cout << "Please enter some integers (Press '|' to stop): ";
     vector<int> numbers;
-    for (int temp; cin >> temp;)
+
+    for (long temp; cin >> temp;)
     {
-        numbers.push_back(temp);
+        numbers.push_back(narrow_cast<int>(temp));
     }
 
     if (numbers.size() < number_to_sum)
-        error("You didn't enter enough numbers to sum.\n");
+        error("You didn't enter enough integers to sum.\n");
 
-    int total = 0;
+    long sum = 0;
     for (int i = 0; i < number_to_sum; i++)
     {
-        total += numbers[i];
+        sum += numbers[i];
+        sum = narrow_cast<int>(sum);
     }
-    cout << "The sum of the first " << number_to_sum << " numbers is " << total << '\n';
+
+    cout << "The sum of the first " << number_to_sum << " numbers you entered ( ";
+    for (int i = 0; i < number_to_sum; i++)
+    {
+        cout << numbers[i] << ' ';
+    }
+    cout << ") is " << sum << '\n';
     return 0;
 }
 
