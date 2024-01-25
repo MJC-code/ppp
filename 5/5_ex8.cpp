@@ -22,12 +22,13 @@ try
     if (numbers.size() < number_to_sum)
         error("You didn't enter enough numbers to sum.\n");
 
-    int total = 0;
+    int sum = 0;
+    cout << "The sum of the first " << number_to_sum << " numbers you entered ( ";
     for (int i = 0; i < number_to_sum; i++)
     {
-        total += numbers[i];
+        cout << numbers[i] << ' ';
     }
-    cout << "The sum of the first " << number_to_sum << " numbers is " << total << '\n';
+    cout << ") is " << sum << '\n';
     return 0;
 }
 
