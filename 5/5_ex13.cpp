@@ -8,7 +8,7 @@ vector<int> answer;
 
 void setup()
 {
-    cout << "Try to guess the 4 digit combination. Digits have a value 0-9 and no two are the same.\n";
+    cout << "\nTry to guess the 4 digit combination. Digits have a value 0-9 and no two are the same.\n";
     cout << "You get a bull for each correct digit in the correct place, and a cow for each correct digit in the wrong place\n";
     cout << "Please enter 4 digits from 0 to 9, separated by spaces: ";
     answer.clear();
