@@ -41,14 +41,7 @@ int main()
     cout << "The mode of the strings you entered is " << mode << ".\n";
 
     string min = strings[0];
-    string max = strings[0];
-
-    for (int i = 0; i < strings.size(); ++i)
-    {
-        if (strings[i] < min) min = strings[i];
-        if (strings[i] > max) max = strings[i];
-
-    }
+    string max = strings[strings.size()-1];
 
     cout << "The 'min' string is " << min << endl;
     cout << "The 'max' string is " << max << endl;
