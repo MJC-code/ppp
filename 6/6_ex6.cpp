@@ -8,22 +8,44 @@ vector<string> nouns{"birds", "fish", "C++"};
 vector<string> conjunctions{"and", "or", "but"};
 vector<string> articles{"the"};
 
-bool is_in(string word, vector<string> word_list)
+bool is_in(string word, const vector<string> word_list)
 {
-    for (int i=0; i<word_list.size(); ++i)
+    for (int i = 0; i < word_list.size(); ++i)
     {
-        if(word == word_list[i]) return true;
+        if (word == word_list[i])
+            return true;
     }
     return false;
 }
 
+bool is_sentence()
+{
+    string word;
+    cin >> word;
+    if (!is_in(word, nouns)) return false;
+    
+    cin >> word;
+    if (!is_in(word, verbs)) return false;
+
+    cin >> word;
+    if (word == ".") return true;
+    else if (!is_in(word, conjunctions)) return false;
+
+    return is_sentence();
+}
 
 int main()
 try
 {
+    cout << "Please enter a sentence to evaluate its grammar.\n"
+    << "Grammatical sentences must finish with a space-delimited full stop.\n"
+    << "Recognised words are birds fish C++ rules fly swim and or but.\n";
 
-    for (string word; cin >> word;)
+    while (true)
     {
+    if (is_sentence()) cout << "That was a sentence.\n";
+    else cout << "That was not a sentence.\n";
+    cin.clear();
     }
 
     return 0;
