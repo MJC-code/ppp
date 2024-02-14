@@ -22,6 +22,9 @@ bool is_sentence()
 {
     string word;
     cin >> word;
+
+    if (is_in(word, articles)) cin >> word;
+    
     if (!is_in(word, nouns)) return false;
     
     cin >> word;
@@ -39,12 +42,13 @@ try
 {
     cout << "Please enter a sentence to evaluate its grammar.\n"
     << "Grammatical sentences must finish with a space-delimited full stop.\n"
-    << "Recognised words are birds fish C++ rules fly swim and or but.\n";
+    << "Recognised words are: the birds fish C++ rules fly swim and or but.\n";
 
     while (true)
     {
     if (is_sentence()) cout << "That was a sentence.\n";
     else cout << "That was not a sentence.\n";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     cin.clear();
     }
 
