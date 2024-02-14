@@ -1,0 +1,20 @@
+Programming Principles and Practice - 2nd edition
+Chapter 6 Exercise 7 - grammar for bitwise logical expressions
+
+Expression:
+or_expression
+xor_expression
+"|" xor_expression
+
+xor_expression:
+and_epxression
+"^" and_expression
+
+and_expression:
+primary
+"&" primary
+
+primary:
+integer
+"!" integer
+"~" integer
