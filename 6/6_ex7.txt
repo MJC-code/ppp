@@ -15,7 +15,6 @@ expression "&" expression
 
 primary:
 number
-"("  number ")"
 "!" number
 "~" number
 
