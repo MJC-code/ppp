@@ -36,7 +36,7 @@ long permutations2(long a, long b)
 }
 long combinations(long a, long b)
 {
-    return permutations(a, b) / factorial(b);
+    return permutations2(a, b) / factorial(b);
 }
 
 int main()
