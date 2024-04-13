@@ -4,10 +4,12 @@
 
 /*
     calculator08buggy.cpp
-
     Helpful comments removed.
-
     We have inserted 3 bugs that the compiler will catch and 3 that it won't.
+*/
+
+/*
+Simple calculator
 */
 
 #include "std_lib_facilities.h"
@@ -28,7 +30,7 @@ class Token_stream
     Token buffer;
 
 public:
-    Token_stream() : full(false), buffer(0) {}  // changed from calculaor08buggy.cpp
+    Token_stream() : full(false), buffer(0) {}  // changed from calculator08buggy.cpp
 
     Token get();
     void unget(Token t)
@@ -42,12 +44,14 @@ public:
 };
 
 const char let = 'L';
-const char quit = 'q';  // changed from 'Q' in calculator08buggy.cpp
+const char quit = 'q';   // changed from 'Q' in calculator08buggy.cpp
 const char print = ';';
 const char number = '8';
 const char name = 'a';
+const string declkey = "let"; // missing line in calculator08buggy.cpp
 
-Token Token_stream::get()
+Token Token_stream::get()  
+// read characters from cin and compose a Token
 {
     if (full)
     {
@@ -56,8 +60,11 @@ Token Token_stream::get()
     }
     char ch;
     cin >> ch;
+
     switch (ch)
     {
+    case print: // This line changed to use const print instead of ';'
+    case quit:  // This line missing from calculator08buggy.cpp
     case '(':
     case ')':
     case '+':
@@ -65,10 +72,8 @@ Token Token_stream::get()
     case '*':
     case '/':
     case '%':
-    case ';':
     case '=':
-    case quit:  // This line missing from calculator08buggy.cpp
-        return Token(ch);
+        return Token(ch);  // let each character represent itself
     case '.':
     case '0':
     case '1':
@@ -92,12 +97,12 @@ Token Token_stream::get()
             string s;
             s += ch;
             while (cin.get(ch) && (isalpha(ch) || isdigit(ch)))
-                s = ch;
+                s += ch;  // corrected from 's = ch' in calculator08buggy.cpp
             cin.unget();
-            if (s == "let")
+            if (s == declkey)
                 return Token(let);
             if (s == "quit")
-                return Token(name);
+                return Token(quit); //changed from Token(name) in calculator08buggy.cpp
             return Token(name, s);
         }
         error("Bad token");
@@ -105,7 +110,9 @@ Token Token_stream::get()
 }
 
 void Token_stream::ignore(char c)
+// c represents the kind of Token
 {
+    // first look in buffer:
     if (full && c == buffer.kind)
     {
         full = false;
@@ -113,6 +120,7 @@ void Token_stream::ignore(char c)
     }
     full = false;
 
+    // now search input:
     char ch;
     while (cin >> ch)
         if (ch == c)
@@ -129,6 +137,7 @@ struct Variable
 vector<Variable> names;
 
 double get_value(string s)
+// return the value of the Variable named s
 {
     for (int i = 0; i < names.size(); ++i)
         if (names[i].name == s)
@@ -137,6 +146,7 @@ double get_value(string s)
 }
 
 void set_value(string s, double d)
+// set the Variable named s to d
 {
     for (int i = 0; i <= names.size(); ++i)
         if (names[i].name == s)
@@ -153,6 +163,14 @@ bool is_declared(string s)
         if (names[i].name == s)
             return true;
     return false;
+}
+
+double define_name(string var, double val)   // this whole function missing from calculator08buggy.cpp
+// add (var, val) to names
+{
+    if (is_declared(var)) error(var, "declared twice");
+    names.push_back(Variable(var, val));
+    return val;
 }
 
 Token_stream ts;
@@ -174,6 +192,8 @@ double primary()
     }
     case '-':
         return -primary();
+    case '+':
+        return primary();
     case number:
         return t.value;
     case name:
@@ -233,9 +253,12 @@ double expression()
 }
 
 double declaration()
+    // assume we have seen "let"
+    // handle: name = expression
+    // declare a vaiable called "name" with the initial value 'expression'
 {
     Token t = ts.get();
-    if (t.kind != 'a')
+    if (t.kind != name)
         error("name expected in declaration");
     string name = t.name;
     if (is_declared(name))
@@ -244,7 +267,7 @@ double declaration()
     if (t2.kind != '=')
         error("= missing in declaration of ", name);
     double d = expression();
-    names.push_back(Variable(name, d));
+    define_name(name, d);
     return d;
 }
 
@@ -271,13 +294,13 @@ const string result = "= ";
 
 void calculate()
 {
-    while (true)
+    while (cin)  // changed from while(true) in calculator08buggy.cpp
         try
         {
             cout << prompt;
             Token t = ts.get();
             while (t.kind == print)
-                t = ts.get();
+                t = ts.get();  // first discard all prints
             if (t.kind == quit)
                 return;
             ts.unget(t);
