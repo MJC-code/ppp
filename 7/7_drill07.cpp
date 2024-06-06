@@ -32,7 +32,7 @@ Term:
 Primary:
     Number
     "(" Expression ")"
-    "sqrt" Expression
+    "sqrt" "(" Expression ")"
     "-" Primary
     "+" Primary
 Number:
@@ -57,11 +57,12 @@ struct Token
     string name;
     Token(char ch) : kind(ch), value(0) {}
     Token(char ch, double val) : kind(ch), value(val) {} // Constructor for Token representing a number
-    Token(char ch, string n) : kind(ch), name{n} {} // This constructor missing from caclulator08buggy.cpp
+    Token(char ch, string n) : kind(ch), name{n} {} // Constructor for Token representing a variable
 };
 
 class Token_stream
 {
+private:
     bool full{false};
     Token buffer;
 
@@ -79,6 +80,7 @@ public:
     void ignore(char);
 };
 
+float find_square_root();
 
 Token Token_stream::get()  
 // read characters from cin and compose a Token
@@ -233,8 +235,7 @@ double primary()
         return primary();
     case square_root:
         {
-        float x = sqrt(expression());
-        return x;
+        return find_square_root();
         }
     case number:
         return t.value;
@@ -336,6 +337,20 @@ double statement()
         return expression();
     }
 }
+
+float find_square_root() 
+{
+    Token t = ts.get();
+    
+    if (t.kind != '(') error ("Expected a '('");
+    ts.unget(t);
+    float value = expression();
+    if (value < 0) error("Can not calculate the square root of a negative number.");
+    return sqrt(value);
+
+}
+
+
 
 void clean_up_mess()
 {

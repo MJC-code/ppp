@@ -40,15 +40,15 @@ Number:
 */
 #include "std_lib_facilities.h"
 
-const char let = 'l';
+const char let = 'l'; // token type for 'let'
 const char square_root = 's';
-const char quit = 'q';   // changed from 'Q' in calculator08buggy.cpp
+const char quit = 'q';   
 const char print = ';';
 const char number = '8';
 const char name = 'a';
-const string squarerootkey = "sqrt";
+const string squarerootkey = "sqrt"; // keyword for square root
 const string quitkey = "quit";
-const string declkey = "let"; // missing line in calculator08buggy.cpp
+const string declkey = "let"; 
 
 struct Token
 {
