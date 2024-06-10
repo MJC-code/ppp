@@ -1,6 +1,6 @@
 /* 
- Programming Principles and Practice in C++, 2nd ed. Chapter 7  Drill 8
- Catch error for negative square roots */
+ Programming Principles and Practice in C++, 2nd ed. Chapter 7  Drill 9
+ Add pow(x, i) function where i is an integer*/
 /*
 
 Simple calculator. Input from cin, output to cout
@@ -33,6 +33,7 @@ Primary:
     Number
     "(" Expression ")"
     "sqrt" "(" Expression ")"
+    "pow" "(" Expression "," Integer ")"
     "-" Primary
     "+" Primary
 Number:
@@ -42,11 +43,13 @@ Number:
 
 const char let = 'l';
 const char square_root = 's';
+const char power = 'p';
 const char quit = 'q';   // changed from 'Q' in calculator08buggy.cpp
 const char print = ';';
 const char number = '8';
 const char name = 'a';
 const string squarerootkey = "sqrt";
+const string powerkey = "pow";
 const string quitkey = "quit";
 const string declkey = "let"; // missing line in calculator08buggy.cpp
 
@@ -81,6 +84,7 @@ public:
 };
 
 float find_square_root();
+float find_power();
 
 Token Token_stream::get()  
 // read characters from cin and compose a Token
@@ -106,6 +110,7 @@ Token Token_stream::get()
     case '/':
     case '%':
     case '=':
+    case ',':
         return Token(ch);  // let each character represent itself
     // any of the following characters can begin a number, so put char back into input stream and use cin to read number
     case '.':
@@ -140,6 +145,8 @@ Token Token_stream::get()
                 return Token(quit); //changed from Token(name) in calculator08buggy.cpp
             if (s == squarerootkey)
                 return Token(square_root);
+            if (s == powerkey)
+                return Token(power);
 
             return Token(name, s);
         }
@@ -237,6 +244,8 @@ double primary()
         {
         return find_square_root();
         }
+    case power:
+        return find_power();
     case number:
         return t.value;
     case name:
@@ -338,7 +347,7 @@ double statement()
     }
 }
 
-float find_square_root() 
+float find_square_root() // this function called after sqrt token has been found
 {
     Token t = ts.get();
     
@@ -347,9 +356,21 @@ float find_square_root()
     float value = expression();
     if (value < 0) error("Can not calculate the square root of a negative number.");
     return sqrt(value);
-
 }
 
+float find_power()
+{
+    Token t = ts.get();
+    if (t.kind != '(') error ("Expected a '('");
+    float left = expression();
+    t = ts.get();
+    if (t.kind != ',') error ("Expected a ','");
+    float right = expression();
+    if (right - int(right) != 0) error ("Fractional exponent");
+    t = ts.get();
+    if (t.kind != ')') error ("Expected a ')'");
+    return pow(left, right);
+}
 
 
 void clean_up_mess()
