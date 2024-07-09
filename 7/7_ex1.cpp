@@ -1,6 +1,6 @@
 /*
- Programming Principles and Practice in C++, 2nd ed. Chapter 7  Drill 11
- Change "quit keyword" to 'exit'
+ Programming Principles and Practice in C++, 2nd ed. Chapter 7  Exercise 1
+ Allow underscores in variable names - I opted not to allow variable names to start with an underscore
 /*
 
 Simple calculator. Input from cin, output to cout
@@ -17,9 +17,9 @@ Statement:
 Print:
     ";"
 Quit:
-    "exit"
+    "quit"
 Declaration:
-    "#" Name "=" Expression
+    "let" Name "=" Expression
 Expression:
     Term
     Expression "+" Term
@@ -50,7 +50,7 @@ const char number = '8';
 const char name = 'a';
 const string squarerootkey = "sqrt";
 const string powerkey = "pow";
-const string quitkey = "exit";
+const string quitkey = "quit";
 const string declkey = "let";
 
 struct Token
@@ -70,8 +70,7 @@ private:
     Token buffer;
 
 public:
-    Token_stream() : full(false), buffer(0) {} // changed from calculator08buggy.cpp
-
+    Token_stream() : full(false), buffer(0) {}
     Token get();
     void unget(Token t)
     {
@@ -101,8 +100,6 @@ Token Token_stream::get()
 
     switch (ch)
     {
-    case let:
-        return Token(let);
     case print:
     case '(':
     case ')':
@@ -137,12 +134,12 @@ Token Token_stream::get()
         {
             string s;
             s += ch;
-            while (cin.get(ch) && (isalpha(ch) || isdigit(ch)))
-                s += ch; // corrected from 's = ch' in calculator08buggy.cpp
-            cin.unget();
+            while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_'))
+                s += ch;
+            cin.unget(); // don't swallow the first character after the string
 
-            // if (s == declkey)
-            //     return Token(let);
+            if (s == declkey)
+                return Token(let);
             if (s == quitkey)
                 return Token(quit);
             if (s == squarerootkey)
@@ -214,7 +211,7 @@ bool is_declared(string s)
     return false;
 }
 
-double define_name(string var, double val) // this whole function missing from calculator08buggy.cpp
+double define_name(string var, double val)
 // add (var, val) to names
 {
     if (is_declared(var))
@@ -238,7 +235,7 @@ double primary()
         t = ts.get();
         if (t.kind != ')')
             error("'(' expected");
-        return d; // This line missing from calculator08buggy.cpp
+        return d;
     }
     case '-':
         return -primary();
@@ -393,7 +390,7 @@ const string result = "= ";
 
 void calculate()
 {
-    while (cin) // changed from while(true) in calculator08buggy.cpp
+    while (cin) 
         try
         {
             cout << prompt;
