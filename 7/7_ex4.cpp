@@ -187,59 +187,59 @@ struct Variable
 
 class Symbol_table
 {
-public:
-    Symbol_table() {}
-
 private:
     vector<Variable> var_table;
-
+public:
+    Symbol_table() {}
+    double get_value(string s);
+    void set_value(string s, double d);
+    bool is_declared(string s);
+    double define_name(string var, double val, bool constant);
 };
 
-Symbol_table names;
 
-
-
-double get_value(string s)
+double Symbol_table::get_value(string s)
 // return the value of the Variable named s
 {
-    for (int i = 0; i < names.size(); ++i)
-        if (names[i].name == s)
-            return names[i].value;
+    for (int i = 0; i < var_table.size(); ++i)
+        if (var_table[i].name == s)
+            return var_table[i].value;
     error("get: undefined name ", s);
 }
 
-void set_value(string s, double d)
+void Symbol_table::set_value(string s, double d)
 // set the Variable named s to d
 {
-    for (int i = 0; i <= names.size(); ++i)
-        if (names[i].name == s)
+    for (int i = 0; i <= var_table.size(); ++i)
+        if (var_table[i].name == s)
         {
-            if (names[i].constant)
+            if (var_table[i].constant)
                 error("Constant values can not be given a new value");
-            names[i].value = d;
+            var_table[i].value = d;
             return;
         }
     error("set: undefined name ", s);
 }
 
-bool is_declared(string s)
+bool Symbol_table::is_declared(string s)
 {
-    for (int i = 0; i < names.size(); ++i)
-        if (names[i].name == s)
+    for (int i = 0; i < var_table.size(); ++i)
+        if (var_table[i].name == s)
             return true;
     return false;
 }
 
-double define_name(string var, double val, bool constant)
+double Symbol_table::define_name(string var, double val, bool constant)
 // add (var, val) to names
 {
     if (is_declared(var))
         error(var, "is already declared. Use 'x = 4' to change value of a variable which has already been declared.");
-    names.push_back(Variable(var, val, constant));
+    var_table.push_back(Variable(var, val, constant));
     return val;
 }
 
 Token_stream ts;
+Symbol_table names;
 
 double expression();
 
@@ -273,16 +273,16 @@ double primary()
         Token next_token = ts.get();
         if (next_token.kind == '=')
         {
-            if (!is_declared(t.name))
+            if (!names.is_declared(t.name))
                 error("Can't alter value of undeclared variable. Use 'let x = 6' to declare a new variable.");
             float val = expression();
-            set_value(t.name, val);
+            names.set_value(t.name, val);
             return val;
         }
         else
         {
             ts.unget(next_token);
-            return get_value(t.name);
+            return names.get_value(t.name);
         }
     }
     default:
@@ -360,13 +360,13 @@ double declaration()
     if (t.kind != name)
         error("name expected in declaration");
     string name = t.name;
-    if (is_declared(name))
+    if (names.is_declared(name))
         error(name, " declared twice");
     Token t2 = ts.get();
     if (t2.kind != '=')
         error("= missing '=' in declaration of ", name);
     double d = expression();
-    define_name(name, d, false);
+    names.define_name(name, d, false);
     return d;
 }
 
@@ -379,13 +379,13 @@ double constantDeclaration()
     if (t.kind != name)
         error("name expected in declaration");
     string name = t.name;
-    if (is_declared(name))
+    if (names.is_declared(name))
         error(name, " is already declared.");
     Token t2 = ts.get();
     if (t2.kind != '=')
         error("= missing '=' in declaration of ", name);
     double d = expression();
-    define_name(name, d, true);
+    names.define_name(name, d, true);
     return d;
 }
 
@@ -467,9 +467,9 @@ void calculate()
 int main()
 try
 {
-    define_name("k", 1000, true);
-    define_name("pi", 3.1415926535, true);
-    define_name("e", 2.7182818284, true);
+    names.define_name("k", 1000, true);
+    names.define_name("pi", 3.1415926535, true);
+    names.define_name("e", 2.7182818284, true);
     calculate();
     return 0;
 }
