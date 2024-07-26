@@ -1,6 +1,6 @@
 /*
- Programming Principles and Practice in C++, 2nd ed. Chapter 7  Exercise 5
-Modify Token_stream::get() to return Token(print) when it sees newline
+ Programming Principles and Practice in C++, 2nd ed. Chapter 7  Exercise 6
+Add help function on 'H' or 'h"
 /*
 
 Simple calculator. Input from cin, output to cout
@@ -9,6 +9,7 @@ Simple calculator. Input from cin, output to cout
 Calculation:
     Statement
     Print
+    Help
     Quit
     Calulation Statement
 Statement:
@@ -42,6 +43,7 @@ Number:
 */
 #include "std_lib_facilities.h"
 
+const char help = 'h';
 const char let = 'l';
 const char constant = 'c';
 const char square_root = 's';
@@ -97,19 +99,15 @@ Token Token_stream::get()
         full = false;
         return buffer;
     }
-
-    
-    
-    // otherwise, assemble a Token by reading fron cin (now using cin.get to retain whitespace)
+    // otherwise, assemble a Token by reading fron cin
     char ch;
-    cin.get(ch);
-
-    while (isspace(ch) && ch != '\n') cin.get(ch); //consume all whitespace except newline
+    cin >> ch;
 
     switch (ch)
     {
-    case '\n':  // this line replaces case print:
-        return Token(print);
+    case help:
+        return Token(help);
+    case print:
     case '(':
     case ')':
     case '+':
@@ -160,7 +158,6 @@ Token Token_stream::get()
 
             return Token(name, s);
         }
-
         error("Bad token");
     }
 }
@@ -249,6 +246,7 @@ Token_stream ts;
 Symbol_table names;
 
 double expression();
+void displayHelp();
 
 double primary()
 {
@@ -461,6 +459,11 @@ void calculate()
                 t = ts.get(); // first discard all prints
             if (t.kind == quit)
                 return;
+            if (t.kind == help)
+            {
+                displayHelp();
+                continue;
+            }
             ts.unget(t);
             cout << result << statement() << endl;
         }
@@ -471,12 +474,22 @@ void calculate()
         }
 }
 
+void displayHelp()
+{
+    cout << "Type h for help at any time\n"
+         << "This calculator evaluates mathematical expressions. Enter ; to print result\n"
+         << "pow(x, y) for integer y and sqrt(x) are accepted\n"
+         << "Define variables with 'let x = y;' and redefine them with 'x = z;'\n"
+         << "Define constants with 'const x = y;'\n";
+}
+
 int main()
 try
 {
     names.define_name("k", 1000, true);
     names.define_name("pi", 3.1415926535, true);
     names.define_name("e", 2.7182818284, true);
+    cout << "Calculator - Enter h to display help\n";
     calculate();
     return 0;
 }
